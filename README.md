@@ -48,7 +48,8 @@ var testdata = {
     }
 };
 
-var ul2 = document.getElementById('template-container');
+var data,
+    ul2 = document.getElementById('template-container');
 for( var key in testdata ) {
     console.log( testdata[key] );
     data = kawa.make({'selector':'test-template', 'data':testdata[key]});
