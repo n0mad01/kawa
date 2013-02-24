@@ -49,11 +49,11 @@ var testdata = {
 };
 
 var data,
-    ul2 = document.getElementById('template-container');
+    ul = document.getElementById('template-container');
 for( var key in testdata ) {
     console.log( testdata[key] );
     data = kawa.make({'selector':'test-template', 'data':testdata[key]});
-    ul2.appendChild( data );
+    ul.appendChild( data ); // of course you can also write $('.template-container').append( data );
 }
 ```
 
