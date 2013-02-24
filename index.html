@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Kawa - Yet another Clientside templating engine</title>
+    <title>Kawa - A JavaScript Clientside Templating Engine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Adrian Soluch 2013">
@@ -16,7 +16,7 @@
 </head>
 
 <body id="body">
-    <h1>Kawa - Clientside templating engine</h1>
+    <h1>Kawa - A JavaScript Clientside Templating Engine</h1>
 
     <li id="test-template">
         Name : {name}<br>
@@ -84,7 +84,6 @@
         for( var key in testdata2 ) {
             console.log( testdata2[key] );
             data = kawa.make({'selector':'test-template-2', 'data':testdata2[key]});
-            console.log( data );
             ul2.appendChild( data );
         }
 
