@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Kawa - Yet another Clientside templating engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Adrian Soluch 2013">
+
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+    <script src="kawa.js"></script>
+
+    <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body id="body">
+    <h1>Kawa - Clientside templating engine</h1>
+
+    <li id="test-template">
+        Name : {name}<br>
+        Address : {address}<br>
+        <div>
+            Zip-Code : {zip}<br>
+        </div>
+    </li>
+
+    <li id="test-template-2">
+        Name : {name}<br>
+        <div>
+            Zip-Code : {zip}<br>
+        </div>
+        Address : {address}<br>
+    </li>
+
+    <h5>Example #1</h5>
+    <ul id="template-container">
+    </ul>
+
+    <h5>Example #2</h5>
+    <ul id="template-container-2">
+    </ul>
+
+    <script>
+        // simple testdata, usually you'll parse 
+        // here some JSON objects ...
+        var testdata1 = {
+            'name' : 'Adrian Soluch',
+            'address' : 'FantasyStrasse 12/12',
+            'zip' : '12345'
+        }
+
+        // get the prepared template node
+        var data = kawa.make({'selector':'test-template', 'data':testdata1});
+
+        // this is a pure Javascript example, 
+        // of course you can also use jQuery : 
+        // $('#template-container').append( data );
+        var ul = document.getElementById('template-container');
+        ul.appendChild(data);
+
+
+        // second example with several elements
+        var testdata2 = {
+            '0' : {
+                'name' : 'Adrian Soluch',
+                'address' : 'FantasyStrasse 12/12',
+                'zip' : '12345'
+            },
+            '1' : {
+                'name' : 'Mr. Black',
+                'address' : 'FantasyStrasse 14/14',
+                'zip' : '67890'
+            },
+            '2' : {
+                'name' : 'Mr. White',
+                'address' : 'FantasyStrasse 16/16',
+                'zip' : '123'
+            }
+        };
+
+        var ul2 = document.getElementById('template-container-2');
+        for( var key in testdata2 ) {
+            console.log( testdata2[key] );
+            data = kawa.make({'selector':'test-template-2', 'data':testdata2[key]});
+            console.log( data );
+            ul2.appendChild( data );
+        }
+
+    </script>
+
+</body>
+</html>
