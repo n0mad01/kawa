@@ -13,12 +13,18 @@
     <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <style type="text/css">
+        .hide {
+            display: none;
+        }
+    </style>
 </head>
 
 <body id="body">
     <h1>Kawa - A JavaScript Clientside Templating Engine</h1>
 
-    <li id="test-template">
+    <li id="test-template" class="hide">
         Name : {name}<br>
         Address : {address}<br>
         <div>
@@ -26,12 +32,21 @@
         </div>
     </li>
 
-    <li id="test-template-2">
+    <li id="test-template-2" class="hide">
+        Name : {name.first} {name.last}<br>
+        ByNames : {name.byname.0}, {name.byname.1}<br>
+        <div>
+            Zip-Code : {address.private.zip}<br>
+        </div>
+        Address : {private.street}<br>
+    </li>
+
+    <li id="test-template-3" class="hide">
         Name : {name}<br>
         <div>
-            Zip-Code : {zip}<br>
+            Zip-Code : {address.private.zip}<br>
         </div>
-        Address : {address}<br>
+        Address : {private.street}<br>
     </li>
 
     <h5>Example #1</h5>
@@ -42,8 +57,12 @@
     <ul id="template-container-2">
     </ul>
 
+    <h5>Example #3</h5>
+    <ul id="template-container-3">
+    </ul>
+
     <script>
-        // simple testdata, usually you'll parse 
+        // FIRST EXAMPLE with simple testdata, usually you'll parse 
         // here some JSON objects ...
         var testdata1 = {
             'name' : 'Adrian Soluch',
@@ -60,9 +79,37 @@
         var ul = document.getElementById('template-container');
         ul.appendChild(data);
 
-
-        // second example with several elements
+        // SECOND EXAMPLE with a more complex object
         var testdata2 = {
+            'name' : {
+                first : 'Mr. White',
+                last : 'Mr. Whites Lastname',
+                byname : {
+                    0 : 'n0mad',
+                    1 : 'n0mad01'
+                }
+            },
+            address : {
+                'private' : {
+                    street : 'street 16/16',
+                    zip : '123'
+                },
+                work : {
+                    address : {
+                        'street' : 'street 17/17',
+                        'zip' : '123'
+                    }
+                },
+            },
+            somethingA : 'A',
+            somethingB : 'B'
+        };
+
+        data = kawa.make({'selector':'test-template-2', 'data':testdata2});
+        document.getElementById('template-container-2').appendChild(data);
+
+        // THIRD EXAMPLE with several elements
+        var testdata3 = {
             '0' : {
                 'name' : 'Adrian Soluch',
                 'address' : 'street 12/12',
@@ -74,17 +121,31 @@
                 'zip' : '67890'
             },
             '2' : {
-                'name' : 'Mr. White',
-                'address' : 'street 16/16',
-                'zip' : '123'
+                'address' : {
+                    'private' : {
+                        street : 'street 16/16',
+                        zip : '123'
+                    },
+                    work : {
+                        address : {
+                            'street' : 'street 17/17',
+                            'zip' : '123'
+                        }
+                    },
+                },
+                'name' : {
+                    first : 'Mr. White',
+                    last : 'Mr. Whites Lastname'
+                },
+                somethingA : 'A',
+                somethingB : 'B'
             }
         };
 
-        var ul2 = document.getElementById('template-container-2');
-        for( var key in testdata2 ) {
-            console.log( testdata2[key] );
-            data = kawa.make({'selector':'test-template-2', 'data':testdata2[key]});
-            ul2.appendChild( data );
+        var ul3 = document.getElementById('template-container-3');
+        for( var key in testdata3 ) {
+            data = kawa.make({'selector':'test-template-3', 'data':testdata3[key]});
+            ul3.appendChild( data );
         }
 
     </script>
