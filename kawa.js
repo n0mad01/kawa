@@ -1,5 +1,5 @@
 /*!
- * Kawa - Yet another Clientside templating engine
+ * Kawa - A Clientside Templating Engine
  * Copyright 2013, Adrian Soluch http://soluch.at/
  * Released under the MIT license
  */
@@ -43,28 +43,29 @@
         },
         parseElement : function( node, data ) {
             node = node.firstChild;
-            var n, m, s;
+            var find = openDelimiter+'(.*?)'+closeDelimiter,
+                regex = new RegExp( find,'gi' ),
+                object_identifiers, // array containing all object literal identifiers, e.g.: ['address.private.street','address.private.zip']
+                haystack,
+                match,
+                ma;
+                
             while( node ) {
                 this.parseElement( node, data );
                 if( node.nodeType === 3 ) {
-                    n = node.data.toString();
-                    m = n.match( openDelimiter+'(.*?)'+closeDelimiter );
 
-                    if( m !== null ) {
-                        s = this.parseObject( data );   // returns an array of all object literal identifiers, e.g.: address.private.zip
-
-                        match = this.matchObjectToElement( s, m[1] );
+                    haystack = node.data.toString();
+                    
+                    while( match = regex.exec( haystack ) ){
 
                         if( match !== null ) {
-                            node.data = node.data.replace( openDelimiter + m[1] + closeDelimiter, match.split('.').reduce( this.index, data ) ); // the magic
-                        }
-                    }
 
-                    for( var key in data ) {
-                        if( data.hasOwnProperty( key ) ) {
-                            if( node.data.indexOf( openDelimiter + key + closeDelimiter ) !== -1 ) {
+                            object_identifiers = this.parseObject( data );   // returns an array of all object literal identifiers, e.g.: ['address.private.street','address.private.zip']
 
-                                node.data = node.data.replace( openDelimiter + key + closeDelimiter, data[key] );
+                            ma = this.matchObjectToElement( object_identifiers, match[1] ); // all matching strings which will be replaced
+
+                            if( ma !== null ) {
+                                node.data = node.data.replace( openDelimiter + match[1] + closeDelimiter, ma.split('.').reduce( this.index, data ) ); // the magic / replacement
                             }
                         }
                     }
